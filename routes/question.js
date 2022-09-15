@@ -1,0 +1,102 @@
+const express = require('express')
+const jwt = require('jsonwebtoken')
+const router = express.Router()
+const questionModel = require("../schemes/questionScheme")
+const userModel = require('../schemes/userScheme')
+const ObjectId = require("mongodb").ObjectId
+
+//getting random question
+router.get('/', async (req, res) => {
+    //reference https://stackoverflow.com/questions/14644545/random-document-from-a-collection-in-mongoose
+    let count = await questionModel.count({})
+    let random = Math.floor(Math.random() * count);
+    let question = await questionModel.findOne({}).skip(random)
+    if(question){
+        let correctly_answered = question.correctly_answered + 1
+        await questionModel.findOneAndUpdate({ _id: question._id }, { correctly_answered })
+    }
+    return res.status(200).send({question})
+})
+
+router.post('/add',async (req, res) => {
+    let { text, type, timer, choices, img, creater, public ,correct_answer} = req.body
+    console.log(req.body)
+    if (!text, !choices, !creater,!correct_answer) {
+        return res.status(400).send({ error: "Please provide all required fields" })
+    }
+    // console.log(cv)
+    choices = JSON.parse(choices)
+    //Add img support
+    let question =  new questionModel({
+        text, choices, creater:ObjectId(creater), type, timer, img, creater, public,correct_answer
+    })
+    await question.save()
+    return res.status(200).send({ data: question, response: "Question succesfully added" })
+})
+
+router.get('/:id',async (req, res) => {
+    let id = req.params.id
+    try{
+        let question = await questionModel.findById(id)
+        if (question === null) {
+            return res.status(400).send({ error: "No such question" })
+        }
+        else {
+            return res.status(200).send(question)
+        }
+    }
+    catch(err){
+        return res.status(400).send({ error: "Invalid id" })
+    }
+})
+
+//To edit question
+router.post("/:id",async (req, res) => {
+    let id = req.params.id
+    let question = await questionModel.findOne({ _id: ObjectId(id) })
+    console.log(req.body)
+    if (question === null) {
+        return res.status(400).send({ error: "No such question" })
+    }
+    if (req.body === {}) {
+        let correctly_answered = question.correctly_answered + 1
+        try{
+            await questionModel.findOneAndUpdate({ _id: question._id }, { correctly_answered })
+            return res.status(200).send(question)
+        }
+        catch(err){
+            return res.status(400).send({"error":"Inavlid Id"})
+        }
+    }
+    else {
+        const { text, type, timer, choices, img, creater, public } = req.body
+        try{
+            let updatedQuestion =  await questionModel.findOneAndUpdate({ _id: question._id }, { text, choices, creater, type, timer:Number(timer), img, creater, public })
+            return res.status(200).send({data:updatedQuestion,response:"Question Updated"})
+        }
+        catch(err){
+            return res.status(400).send({"error":"Inavlid Id"})
+        }
+    }
+})
+//Delete Question
+router.delete("/:id", async(req, res) => {
+    let id = req.params.id
+    try{
+        let question = await questionModel.findOne({ _id: ObjectId(id) })
+        if (question === null) {
+            return res.status(400).send({ error: "No such question" })
+        }
+            await questionModel.findOneAndDelete({ _id: question._id })
+            return res.status(200).send("Question succesfully deleted")
+        }   
+        catch(err){
+            return res.status(400).send({"error":"Inavlid Id"})
+        } 
+
+    }
+)
+//Extra functionality
+//search quesion by query to get publically available questions
+//Add subject type to question to get personalized random questions
+module.exports = router
