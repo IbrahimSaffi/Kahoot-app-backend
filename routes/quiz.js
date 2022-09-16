@@ -50,7 +50,7 @@ router.delete('/:id',async (req,res)=>{
         return res.status(400).send({error:"No such template"})
     }
     await quizModel.findByIdAndDelete(id)
-    return res.status(200).send({response:"Deleted Succesfully"})
+    return res.status(200).send({id,response:"Deleted Succesfully"})
 })
 //Might not need(extra)
 //To get all quizes templates by particuler user

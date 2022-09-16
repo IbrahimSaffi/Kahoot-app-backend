@@ -4,7 +4,18 @@ const router = express.Router()
 const questionModel = require("../schemes/questionScheme")
 const userModel = require('../schemes/userScheme')
 const ObjectId = require("mongodb").ObjectId
+const multer = require('multer')
 
+// Initializing multer
+
+const storage = multer.diskStorage({
+    destination:function(req,file,cb){
+        cb(null,"public/updload")
+    },
+    filename:function(req,file,cb){
+        cb(null,Date.now()+"-"+file.originalname)
+    }
+}) 
 //getting random question
 router.get('/', async (req, res) => {
     //reference https://stackoverflow.com/questions/14644545/random-document-from-a-collection-in-mongoose
@@ -15,20 +26,23 @@ router.get('/', async (req, res) => {
         let correctly_answered = question.correctly_answered + 1
         await questionModel.findOneAndUpdate({ _id: question._id }, { correctly_answered })
     }
-    return res.status(200).send({question})
+    return res.status(200).send(question)
 })
-
-router.post('/add',async (req, res) => {
+// To add question
+const upload = multer({storage})
+router.post('/add',upload.single("img"),async (req, res) => {
     let { text, type, timer, choices, img, creater, public ,correct_answer} = req.body
-    console.log(req.body)
+    console.log(req.file)
     if (!text, !choices, !creater,!correct_answer) {
         return res.status(400).send({ error: "Please provide all required fields" })
     }
-    // console.log(cv)
     choices = JSON.parse(choices)
     //Add img support
+    if(typeof(req.file)==="object"){
+    imageUrl = process.env.BASE_URL+'upload/' +req.file.filename
+    }
     let question =  new questionModel({
-        text, choices, creater:ObjectId(creater), type, timer, img, creater, public,correct_answer
+        text, choices, creater:ObjectId(creater), type, timer, img:imageUrl, creater, public,correct_answer
     })
     await question.save()
     return res.status(200).send({ data: question, response: "Question succesfully added" })
@@ -54,7 +68,6 @@ router.get('/:id',async (req, res) => {
 router.post("/:id",async (req, res) => {
     let id = req.params.id
     let question = await questionModel.findOne({ _id: ObjectId(id) })
-    console.log(req.body)
     if (question === null) {
         return res.status(400).send({ error: "No such question" })
     }
@@ -88,7 +101,7 @@ router.delete("/:id", async(req, res) => {
             return res.status(400).send({ error: "No such question" })
         }
             await questionModel.findOneAndDelete({ _id: question._id })
-            return res.status(200).send("Question succesfully deleted")
+            return res.status(200).send({id,response:"Question succesfully deleted"})
         }   
         catch(err){
             return res.status(400).send({"error":"Inavlid Id"})
