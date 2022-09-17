@@ -23,11 +23,16 @@ Adding sockets logic -->
 16-September 2022  
 8:30 to 8:50 AM Added image support  
 9:00 AM to 9:30 AM early stage planning of socket by writing down thought process and initializing front end and installing necessarey packages on frontend  
-9:30 AM to 10:30  (Frontend router setup(excluding reports record list for teacher)/necessary router planning/guide for each page)  
+9:30 AM to 10:30  (Frontend router setup(excluding reports record list for teacher)/necessary router planning/guide for each page)    
 11:00 AM  to 12:15 PM(Redux/thunks set up with all relevant api calls/All backend related logic inside builder cases)
 12:15 AM to 12:35(Worked with debugging a error(only commented problematic redux case ,still need to debug))
-12:35 to 1:00AM(took break)
-1:30 AM to 2:40 (Login page /signup page/ validation/ QR code and pincode page for joining quiz)
+12:35 to 1:00AM(took break) 
+1:30 AM to 2:40 (Login page /signup page/ validation/ QR code and pincode page for joining quiz)  
+17 september
+3:00 to 3:45 PM Added quiz creation and sending questions socket login on backend
+3:45 to 5:20 PM Succesfully able to create rooms and students are able to join and teacher can see the students who have joined 
+6:10PM to 8:35 Succesfully able to send question from teacher side and with counter so teacher can only click next when time for question is combletete/able to recieve questions on student side every time teacher clicks next or starts question
+12:20PM to 1:40 Able to send slected answer to teacher/fixed bug that was causing socketid to be recreated on student side 
 #Part 2(Front-end) Friday  
 #Part 3(Modification to backend if needed)(Saturday)  
 #Part 4(UI)(Saturday/Sunday)  

@@ -31,13 +31,16 @@ router.get('/', async (req, res) => {
 // To add question
 const upload = multer({storage})
 router.post('/add',upload.single("img"),async (req, res) => {
-    let { text, type, timer, choices, img, creater, public ,correct_answer} = req.body
+    let { text, type, timer, choices, creater, public ,correct_answer} = req.body
     console.log(req.file)
-    if (!text, !choices, !creater,!correct_answer) {
+    if (!text, !creater,!correct_answer) {
         return res.status(400).send({ error: "Please provide all required fields" })
     }
-    choices = JSON.parse(choices)
+    if(choices){
+        choices = JSON.parse(choices)
+    }
     //Add img support
+    let imageUrl;
     if(typeof(req.file)==="object"){
     imageUrl = process.env.BASE_URL+'upload/' +req.file.filename
     }

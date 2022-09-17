@@ -5,6 +5,15 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const morgan = require('morgan')
+const {Socket, Server} = require("socket.io")
+
+
+// initializing express
+const app = express()
+//Inistializing server
+let httpServer = app.listen(process.env.Port || 8000)
+//Initializing the socket
+const io = new Server(httpServer,{cors:{origin:"*"}})
 
 //routers
 const authRouter = require("./routes/auth")
@@ -20,8 +29,6 @@ mongoose.connect("mongodb+srv://IbrahimSaffi:jmk161651@kahoot.f4i23sq.mongodb.ne
 ).then(()=>console.log("Connected to Database server"))
 .catch((err)=>console.log(err))
 
-// initializing express
-const app = express()
 
 // middleware usage
 app.use(cors({ origin: "*" }))
@@ -36,8 +43,6 @@ app.use(authenticate)
 app.use('/question', questionRouter)
 app.use('/quiz', quizRouter)
 
-//Inistializing server
-app.listen(process.env.Port || 8000)
 
 
 function authenticate(req,res,next) {
@@ -60,4 +65,38 @@ function authenticate(req,res,next) {
     }
  }
 }
-
+let rooms ={}
+//Socket Logic
+io.on("connection",(socket)=>{
+    console.log(socket.id ,"connected")
+    socket.on("create-room",(roomId)=>{
+        console.log(roomId +" room created")
+        //teacher id is required in case teacher refreshes page
+        // rooms[roomId].admin.userId =teacherId
+        rooms[roomId] ={}
+        rooms[roomId].admin =socket.id
+        rooms[roomId].members =[]
+    })
+    socket.on("join-room",(data)=>{
+        if(rooms.hasOwnProperty(data.roomId)){
+            socket.join(data.roomId)
+            rooms[data.roomId].members.push({socket:socket.id,studentName:data.name})
+            console.log(rooms[data.roomId].members)
+            //Sending list of joined student
+            io.to(rooms[data.roomId].admin).emit("joined-students-update",{socket:socket.id,studentName:data.name})
+        }
+    })
+    socket.on("start-update-quiz",async (data)=>{
+        if(rooms.hasOwnProperty(data.roomId)&&rooms[data.roomId].admin===socket.id){
+         socket.to(data.roomId).emit("update-question",data.currQuestion)
+        }
+    })
+    socket.on("receive-answer",(data)=>{
+        console.log(data,rooms[data.roomId],socket.id)
+        let studentIndex = rooms[data.roomId].members.findIndex(student=>student.socket===socket.id)
+        console.log(studentIndex)
+        let studentName = rooms[data.roomId].members[studentIndex].studentName
+        io.to(rooms[data.roomId].admin).emit("answer-update",{studentName,answer:data.answer})
+    })
+    
+})
