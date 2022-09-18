@@ -30,11 +30,19 @@ Adding sockets logic -->
 1:30 AM to 2:40 (Login page /signup page/ validation/ QR code and pincode page for joining quiz)  
 17 september
 3:00 to 3:45 PM Added quiz creation and sending questions socket login on backend
-3:45 to 5:20 PM Succesfully able to create rooms and students are able to join and teacher can see the students who have joined 
-6:10PM to 8:35 Succesfully able to send question from teacher side and with counter so teacher can only click next when time for question is combletete/able to recieve questions on student side every time teacher clicks next or starts question
-12:20PM to 1:40 Able to send slected answer to teacher/fixed bug that was causing socketid to be recreated on student side 
-#Part 2(Front-end) Friday  
-#Part 3(Modification to backend if needed)(Saturday)  
-#Part 4(UI)(Saturday/Sunday)  
-#Part 5(bug fixes/misc/)Monday  
-#Part 6(extra functionality)Monday/Later  
+3:45 to 5:20 PM Succesfully able to create rooms and students are able to join and teacher can see the students who have joined   
+6:10PM to 8:35 Succesfully able to send question from teacher side and with counter so teacher can only click next when time   for question is combletete/able to recieve questions on student side every time teacher clicks next or starts question  
+18 September  
+12:20AM to 1:40AM Able to send slected answer to teacher/fixed bug that was causing socketid to be recreated on student side  
+1:05 PM to 2:50 PM Able to create report for each student  
+6:10 PM to 9:20 PM  Added design for every page except for templates page  
+11:00PM to 3:30 AM Able to add Question with image/Design of Add Question page  
+3:30AM to 3:45AM Able to delete question  
+//Tasks Remaning
+Edit question
+Move up and down question in template
+Save template(logic already exists just need to attach to api request)
+Edit Template(Same logic as above)  
+Delete Template
+Address bug with socket answer selection so report can be generated and sent to student (logic of report generation already exists)  
+Add Timer UI on studnet and teacher side  

@@ -47,6 +47,7 @@ app.use('/quiz', quizRouter)
 
 function authenticate(req,res,next) {
  const authHeaderInfo = req.headers['authorization']
+ console.log(authHeaderInfo)
  if(authHeaderInfo===undefined){
     return res.status(401).send({error:"No token provided"})
  }
@@ -81,20 +82,18 @@ io.on("connection",(socket)=>{
         if(rooms.hasOwnProperty(data.roomId)){
             socket.join(data.roomId)
             rooms[data.roomId].members.push({socket:socket.id,studentName:data.name})
-            console.log(rooms[data.roomId].members)
             //Sending list of joined student
             io.to(rooms[data.roomId].admin).emit("joined-students-update",{socket:socket.id,studentName:data.name})
         }
     })
-    socket.on("start-update-quiz",async (data)=>{
+    socket.on("start-update-quiz", (data)=>{
+        console.log(data,socket.id,rooms)
         if(rooms.hasOwnProperty(data.roomId)&&rooms[data.roomId].admin===socket.id){
          socket.to(data.roomId).emit("update-question",data.currQuestion)
         }
     })
     socket.on("receive-answer",(data)=>{
-        console.log(data,rooms[data.roomId],socket.id)
         let studentIndex = rooms[data.roomId].members.findIndex(student=>student.socket===socket.id)
-        console.log(studentIndex)
         let studentName = rooms[data.roomId].members[studentIndex].studentName
         io.to(rooms[data.roomId].admin).emit("answer-update",{studentName,answer:data.answer})
     })

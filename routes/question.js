@@ -10,7 +10,7 @@ const multer = require('multer')
 
 const storage = multer.diskStorage({
     destination:function(req,file,cb){
-        cb(null,"public/updload")
+        cb(null,"public/upload")
     },
     filename:function(req,file,cb){
         cb(null,Date.now()+"-"+file.originalname)
@@ -31,6 +31,7 @@ router.get('/', async (req, res) => {
 // To add question
 const upload = multer({storage})
 router.post('/add',upload.single("img"),async (req, res) => {
+    console.log(req.body)
     let { text, type, timer, choices, creater, public ,correct_answer} = req.body
     console.log(req.file)
     if (!text, !creater,!correct_answer) {
