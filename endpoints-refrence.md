@@ -1,26 +1,26 @@
-//Create user(working)  
-auth/signup post 
-//login(working)  
-auth/signin get
-//token(working)  
-auth/token get
-//create question(working)
-questions/add post
-//get random question(working)  
-questions/ get
-//get specific question(working) 
-questions/:id 
-//update question(working)  
-questions/:id post
-//delete question(working)  
-questions/:id Delete
-//create quiz(working)  
-quizes/add post
-//get template(working) 
-quizes/:id get
-<!-- //get quizes by particular user
-quizes/:uid get -->
-// update template(working)  
-quizes/:id post
-// delete template(working)  
-quizes/:id delete
+Endpoints guide  
+//Create user     
+auth/signup post  
+//login  
+auth/signin get   
+//token  
+auth/token get  
+//create question  
+questions/add post  
+//get random question  
+questions/ get  
+//get specific question  
+questions/:id get  
+//update question  
+questions/:id post  
+//delete question   
+questions/:id Delete  
+//create quiz  
+quizes/add post  
+//get template   
+quizes/:id get  
+// update template  
+quizes/:id post  
+// delete template   
+quizes/:id delete  
+baseurl =""  
