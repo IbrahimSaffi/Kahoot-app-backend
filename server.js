@@ -47,7 +47,6 @@ app.use('/quiz', quizRouter)
 
 function authenticate(req,res,next) {
  const authHeaderInfo = req.headers['authorization']
- console.log(authHeaderInfo)
  if(authHeaderInfo===undefined){
     return res.status(401).send({error:"No token provided"})
  }
@@ -87,12 +86,13 @@ io.on("connection",(socket)=>{
         }
     })
     socket.on("start-update-quiz", (data)=>{
-        console.log(data,socket.id,rooms)
+        console.log(data)
         if(rooms.hasOwnProperty(data.roomId)&&rooms[data.roomId].admin===socket.id){
          socket.to(data.roomId).emit("update-question",data.currQuestion)
         }
     })
     socket.on("receive-answer",(data)=>{
+         console.log("recieved answer",data)
         let studentIndex = rooms[data.roomId].members.findIndex(student=>student.socket===socket.id)
         let studentName = rooms[data.roomId].members[studentIndex].studentName
         io.to(rooms[data.roomId].admin).emit("answer-update",{studentName,answer:data.answer})

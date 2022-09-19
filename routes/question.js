@@ -37,9 +37,9 @@ router.post('/add',upload.single("img"),async (req, res) => {
     if (!text, !creater,!correct_answer) {
         return res.status(400).send({ error: "Please provide all required fields" })
     }
-    if(choices){
-        choices = JSON.parse(choices)
-    }
+    // if(choices){
+    //     choices = choices)
+    // }
     //Add img support
     let imageUrl;
     if(typeof(req.file)==="object"){
@@ -71,14 +71,16 @@ router.get('/:id',async (req, res) => {
 //To edit question
 router.post("/:id",async (req, res) => {
     let id = req.params.id
+    console.log(id)
     let question = await questionModel.findOne({ _id: ObjectId(id) })
+    console.log(question)
     if (question === null) {
         return res.status(400).send({ error: "No such question" })
     }
     if (req.body === {}) {
         let correctly_answered = question.correctly_answered + 1
         try{
-            await questionModel.findOneAndUpdate({ _id: question._id }, { correctly_answered })
+            await questionModel.findOneAndUpdate({ _id: ObjectId(id) }, { correctly_answered })
             return res.status(200).send(question)
         }
         catch(err){
@@ -88,10 +90,15 @@ router.post("/:id",async (req, res) => {
     else {
         const { text, type, timer, choices, img, creater, public } = req.body
         try{
-            let updatedQuestion =  await questionModel.findOneAndUpdate({ _id: question._id }, { text, choices, creater, type, timer:Number(timer), img, creater, public })
+            console.log(req.body)
+            for (var key of req.body.entries()) {
+                console.log(key[0] + ', ' + key[1])
+            }
+            let updatedQuestion =  await questionModel.findOneAndUpdate({ _id: ObjectId(id) }, { text, choices, creater, type, timer:Number(timer), img, creater, public })
             return res.status(200).send({data:updatedQuestion,response:"Question Updated"})
         }
         catch(err){
+            console.log(err)
             return res.status(400).send({"error":"Inavlid Id"})
         }
     }

@@ -38,11 +38,16 @@ Adding sockets logic -->
 6:10 PM to 9:20 PM  Added design for every page except for templates page  
 11:00PM to 3:30 AM Able to add Question with image/Design of Add Question page  
 3:30AM to 3:45AM Able to delete question  
+8:10AM to 9:10AM Add templates
+9:10AM to 9:20AM Delete Templates
+9:20AM to 10:13 AM Edit TemplateS
+10:15 to 10:30 Fixed two minor bugs(one bug remaining)
+11:00 to 12:45 Added edit question logic(incomplete) /Added text display for each question/ connected templates logic to start quiz logic/worked on socket related bug(unresolved)
+1:30 PM to 2:30 unable to generate report due to bug/unable to edit question due to bug/add text display on each question
 //Tasks Remaning
-Edit question
-Move up and down question in template
-Save template(logic already exists just need to attach to api request)
-Edit Template(Same logic as above)  
-Delete Template
 Address bug with socket answer selection so report can be generated and sent to student (logic of report generation already exists)  
-Add Timer UI on studnet and teacher side  
+Bug with EDIT question api call in backend (its recieving empty body while add question with exacly same logic recieves body correctly)  
+image display on questions(small solvable issue remaining with this task)   
+Add Timer UI on studnet and teacher side (Logic is there only need to add css)  
+Polishing the UI  
+//Left dummy template data on frontend so live quiz feature can be tested with more number of questions(It does not effect required functionaliy .Required functionaliy works properly when template quiz is started)

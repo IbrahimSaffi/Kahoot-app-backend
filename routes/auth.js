@@ -11,7 +11,6 @@ router.post('/signup', async (req, res) => {
     if (!name, !email, !password) {
         return res.status(400).send({ error: "Some fields missing" })
     }
-    //could make mistake here
 
     let userExist = await userModel.findOne({ email: email.toLowerCase() })
     if (userExist !== null) {
@@ -59,9 +58,7 @@ router.post('/token', async (req, res) => {
         return res.status(400).send({ error: "No refresh token Provided" })
     }
     try {
-        console.log(process.env.REFRESH_TOKEN_SECRET,refreshToken)
         let payload =  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET)
-        console.log(payload)
         delete payload.exp
         delete payload.iat
         let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY })
