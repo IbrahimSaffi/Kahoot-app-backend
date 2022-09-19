@@ -1,5 +1,5 @@
-Endpoints guide
-//Create user   
+Endpoints guide  
+//Create user     
 auth/signup post  
 //login  
 auth/signin get   
