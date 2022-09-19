@@ -1,27 +1,27 @@
 # Kahoot-app-backend  
 ## Endpoints guide  
-//Create user     
+### Create user     
 auth/signup post  
-//login  
+### login  
 auth/signin get   
-//token  
+### token  
 auth/token get  
-//create question  
+### create question  
 questions/add post  
-//get random question  
+### get random question  
 questions/ get  
-//get specific question  
+### get specific question  
 questions/:id get  
-//update question  
+### update question  
 questions/:id post  
-//delete question   
+### delete question   
 questions/:id Delete  
-//create quiz  
+### create quiz  
 quizes/add post  
-//get template   
+### get template   
 quizes/:id get  
-// update template  
+###  update template  
 quizes/:id post  
-// delete template   
+###  delete template   
 quizes/:id delete  
 baseurl =""  
