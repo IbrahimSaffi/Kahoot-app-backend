@@ -17,7 +17,7 @@ questions/:id post
 ### delete question   
 questions/:id Delete  
 ### create quiz  
-quizes/add post  
+quizes/ post  
 ### get template   
 quizes/:id get  
 ###  update template  
