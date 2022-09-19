@@ -86,16 +86,22 @@ io.on("connection",(socket)=>{
         }
     })
     socket.on("start-update-quiz", (data)=>{
-        console.log(data)
-        if(rooms.hasOwnProperty(data.roomId)&&rooms[data.roomId].admin===socket.id){
+        console.log(rooms,rooms[data.roomId],socket.id)
+        if(rooms.hasOwnProperty(data.roomId)
+        // &&rooms[data.roomId].admin===socket.id
+        ){
+            console.log(data)
          socket.to(data.roomId).emit("update-question",data.currQuestion)
         }
     })
     socket.on("receive-answer",(data)=>{
          console.log("recieved answer",data)
+         console.log("socket",socket.id,rooms[data.roomId].members)
         let studentIndex = rooms[data.roomId].members.findIndex(student=>student.socket===socket.id)
         let studentName = rooms[data.roomId].members[studentIndex].studentName
-        io.to(rooms[data.roomId].admin).emit("answer-update",{studentName,answer:data.answer})
+        console.log(data.roomId)
+        let res = io.in(data.roomId).emit("answer-update",{studentName,answer:data.answer})
+        console.log(res)
     })
     
 })

@@ -33,22 +33,23 @@ const upload = multer({storage})
 router.post('/add',upload.single("img"),async (req, res) => {
     console.log(req.body)
     let { text, type, timer, choices, creater, public ,correct_answer} = req.body
-    console.log(req.file)
+    // console.log(req.file)
     if (!text, !creater,!correct_answer) {
         return res.status(400).send({ error: "Please provide all required fields" })
     }
-    // if(choices){
-    //     choices = choices)
-    // }
-    //Add img support
+    if(choices){
+        choices =JSON.parse(choices)
+    }
     let imageUrl;
     if(typeof(req.file)==="object"){
+        
     imageUrl = process.env.BASE_URL+'upload/' +req.file.filename
     }
     let question =  new questionModel({
         text, choices, creater:ObjectId(creater), type, timer, img:imageUrl, creater, public,correct_answer
     })
     await question.save()
+    console.log(question)
     return res.status(200).send({ data: question, response: "Question succesfully added" })
 })
 
@@ -71,7 +72,6 @@ router.get('/:id',async (req, res) => {
 //To edit question
 router.post("/:id",async (req, res) => {
     let id = req.params.id
-    console.log(id)
     let question = await questionModel.findOne({ _id: ObjectId(id) })
     console.log(question)
     if (question === null) {

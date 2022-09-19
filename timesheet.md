@@ -43,7 +43,8 @@ Adding sockets logic -->
 9:20AM to 10:13 AM Edit TemplateS
 10:15 to 10:30 Fixed two minor bugs(one bug remaining)
 11:00 to 12:45 Added edit question logic(incomplete) /Added text display for each question/ connected templates logic to start quiz logic/worked on socket related bug(unresolved)
-1:30 PM to 2:30 unable to generate report due to bug/unable to edit question due to bug/add text display on each question
+1:30 PM to 2:30 unable to generate report due to bug/unable to edit question due to bug/add text display on each question  
+4:00 PM to 4:30 Improved UI of templates page/worked on debugging(unresolved)
 //Tasks Remaning
 Address bug with socket answer selection so report can be generated and sent to student (logic of report generation already exists)  
 Bug with EDIT question api call in backend (its recieving empty body while add question with exacly same logic recieves body correctly)  
