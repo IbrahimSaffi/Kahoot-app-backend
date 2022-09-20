@@ -11,7 +11,7 @@ const {Socket, Server} = require("socket.io")
 // initializing express
 const app = express()
 //Inistializing server
-let httpServer = app.listen(process.env.Port || 8000)
+let httpServer = app.listen(process.env.PORT || 8000)
 //Initializing the socket
 const io = new Server(httpServer,{cors:{origin:"*"}})
 
